@@ -24,4 +24,17 @@ class PawnTest {
         assertEquals(List.of(new Position(1,2), new Position(1,3)),possiblePositions);
     }
 
+    @Test
+    void shouldReturnAttackPattern() {
+        // Given
+        Position position = new Position(4, 2);
+        Pawn pawn = new Pawn(position);
+
+        // When
+        List<Position> attackPositions = pawn.getAttackPattern();
+
+        // Then
+        assertEquals(List.of(new Position(3, 3), new Position(5, 3)), attackPositions);
+    }
+
 }
