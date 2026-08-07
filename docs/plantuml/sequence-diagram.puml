@@ -1,0 +1,21 @@
+@startuml
+
+actor Player
+
+participant "GameOrchestrator" as GameOrchestrator
+participant "MoveValidator" as MoveValidator
+participant "MoveExecutor" as MoveExecutor
+participant "Chessboard" as Chessboard
+
+Player--> GameOrchestrator: movePiece()
+
+GameOrchestrator--> MoveValidator
+
+MoveValidator--> GameOrchestrator: validationResult
+
+GameOrchestrator--> MoveExecutor: movePiece()
+
+MoveExecutor--> Chessboard: movePiece()
+
+
+@enduml

@@ -1,0 +1,15 @@
+@startuml
+
+actor Player
+
+component "Game Interface" as GameInterface
+component "MoveService" as MoveService
+component "GameOrchestrator" as GameOrchestrator
+Player --> GameInterface
+
+GameInterface --> GameOrchestrator
+
+GameOrchestrator --> MoveService
+
+
+@enduml

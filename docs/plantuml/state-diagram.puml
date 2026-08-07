@@ -1,0 +1,21 @@
+@startuml
+
+[*] --> NotStarted
+
+NotStarted--> InProgress
+InProgress--> Stalemate
+InProgress--> Resigned
+InProgress--> InsufficientMaterial
+InProgress--> InProgress: move refused
+InProgress--> Check
+Check--> Checkmate
+Check--> InProgress
+
+
+
+Resigned--> [*]
+InsufficientMaterial--> [*]
+Checkmate--> [*]
+Stalemate--> [*]
+
+@enduml
