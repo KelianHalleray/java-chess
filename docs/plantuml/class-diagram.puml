@@ -7,7 +7,7 @@ class Position {
 
 abstract class Piece {
   - position: Position
-  + {abstract} getPossibleMoves(): List<Position>
+  + {abstract} getMovePattern(): List<Position>
 }
 
 class King extends Piece{
