@@ -1,11 +1,15 @@
 package org.javachess.entity;
 
-public class Chessboard {
+import org.javachess.interfaces.PositionValidator;
+
+public class Chessboard implements PositionValidator {
+
     private static final int BOARD_SIZE = 8;
 
     public Chessboard() {
     }
 
+    @Override
     public boolean isValidPosition(Position position) {
         int x = position.getPosition_x();
         int y = position.getPosition_y();
