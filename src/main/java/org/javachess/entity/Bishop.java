@@ -1,5 +1,6 @@
 package org.javachess.entity;
 
+import org.javachess.enums.Direction;
 import org.javachess.interfaces.PositionValidator;
 
 import java.util.ArrayList;
@@ -7,6 +8,12 @@ import java.util.List;
 
 public class Bishop extends Piece {
     private final PositionValidator positionValidator;
+    private final List<Direction> possibleDirections = List.of(
+            Direction.UP_LEFT,
+            Direction.UP_RIGHT,
+            Direction.DOWN_LEFT,
+            Direction.DOWN_RIGHT
+    );
 
     public Bishop(Position position, PositionValidator positionValidator) {
         super(position);
@@ -17,24 +24,21 @@ public class Bishop extends Piece {
     public List<Position> getMovePattern() {
         Position position = getPosition();
 
-
         List<Position> possiblePositions = new ArrayList<>();
 
-       for (int x = position.getPosition_x() + 1, y = position.getPosition_y() + 1; positionValidator.isValidPosition(new Position(x, y)); x++, y++) {
-           possiblePositions.add(new Position(x, y));
-       }
+        for (Direction direction : possibleDirections) {
+            int x = position.getPosition_x() + direction.getDeltaX();
+            int y = position.getPosition_y() + direction.getDeltaY();
 
-       for (int x = position.getPosition_x() + 1, y = position.getPosition_y() - 1;  positionValidator.isValidPosition(new Position(x, y)); x++, y--) {
-           possiblePositions.add(new Position(x, y));
-       }
+            while (positionValidator.isValidPosition(new Position(x, y))) {
+                possiblePositions.add(new Position(x, y));
+                x += direction.getDeltaX();
+                y += direction.getDeltaY();
+            }
 
-        for (int x = position.getPosition_x() - 1, y = position.getPosition_y() - 1;  positionValidator.isValidPosition(new Position(x, y)); x--, y--) {
-            possiblePositions.add(new Position(x, y));
         }
 
-        for (int x = position.getPosition_x() - 1, y = position.getPosition_y() + 1;  positionValidator.isValidPosition(new Position(x, y)); x--, y++) {
-            possiblePositions.add(new Position(x, y));
-        }
+
 
         return possiblePositions;
     }
