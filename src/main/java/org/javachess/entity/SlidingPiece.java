@@ -7,11 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class SlidingPiece extends Piece {
-    private final PositionValidator positionValidator;
 
     public SlidingPiece(Position position, PositionValidator positionValidator) {
-        super(position);
-        this.positionValidator = positionValidator;
+        super(position, positionValidator);
     }
 
     protected abstract List<Direction> getPossibleDirections();
@@ -19,6 +17,8 @@ public abstract class SlidingPiece extends Piece {
 
     @Override
     public List<Position> getMovePattern() {
+        PositionValidator positionValidator = getPositionValidator();
+
         List<Position> possiblePositions = new ArrayList<>();
         List<Direction> possibleDirections = getPossibleDirections();
         Position position = getPosition();
