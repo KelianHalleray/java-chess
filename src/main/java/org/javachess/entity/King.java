@@ -1,5 +1,6 @@
 package org.javachess.entity;
 
+import org.javachess.enums.Color;
 import org.javachess.interfaces.PositionValidator;
 
 import java.util.ArrayList;
@@ -7,8 +8,8 @@ import java.util.List;
 
 public class King extends Piece {
 
-    public King(Position position, PositionValidator positionValidator) {
-        super(position, positionValidator);
+    public King(Position position, PositionValidator positionValidator, Color color) {
+        super(position, positionValidator, color);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.javachess.entity;
 
+import org.javachess.enums.Color;
 import org.javachess.enums.Direction;
 import org.javachess.interfaces.PositionValidator;
 
@@ -15,8 +16,8 @@ public class Rook extends SlidingPiece {
             Direction.RIGHT
             );
 
-    public Rook(Position position, PositionValidator positionValidator) {
-        super(position, positionValidator);
+    public Rook(Position position, PositionValidator positionValidator, Color color) {
+        super(position, positionValidator, color);
     }
 
     @Override

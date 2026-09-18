@@ -4,6 +4,7 @@ import org.javachess.entity.Bishop;
 import org.javachess.entity.Chessboard;
 import org.javachess.entity.Piece;
 import org.javachess.entity.Position;
+import org.javachess.enums.Color;
 import org.javachess.interfaces.PositionValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,11 +16,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BishopTest {
     private PositionValidator positionValidator;
+    private Color color;
 
 
     @BeforeEach
     void setUp() {
         positionValidator = new Chessboard();
+        color = Color.WHITE;
     }
 
     @Test
@@ -27,7 +30,7 @@ class BishopTest {
         // Given
 
         Position position = new Position(3, 3);
-        Piece bishop = new Bishop(position, positionValidator);
+        Piece bishop = new Bishop(position, positionValidator, color);
 
         // When
         List<Position> possiblePositions = bishop.getMovePattern();

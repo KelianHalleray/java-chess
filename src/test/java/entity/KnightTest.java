@@ -1,6 +1,7 @@
 package entity;
 
 import org.javachess.entity.*;
+import org.javachess.enums.Color;
 import org.javachess.interfaces.PositionValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class KnightTest {
     private PositionValidator positionValidator;
+    private Color color;
 
     @BeforeEach
     void setUp() {
@@ -23,7 +25,7 @@ class KnightTest {
         // Given
 
         Position position = new Position(3, 3);
-        Piece knight = new Knight(position, positionValidator);
+        Piece knight = new Knight(position, positionValidator, color);
 
         // When
         List<Position> possiblePositions = knight.getMovePattern();
@@ -49,7 +51,7 @@ class KnightTest {
     void shouldNotReturnInvalidPositionInMovePattern() {
         // Given
         Position position = new Position(7, 7);
-        Piece knight = new Knight(position, positionValidator);
+        Piece knight = new Knight(position, positionValidator, color);
 
         // When
         List<Position> possiblePositions = knight.getMovePattern();

@@ -1,5 +1,6 @@
 package org.javachess.entity;
 
+import org.javachess.enums.Color;
 import org.javachess.enums.Direction;
 import org.javachess.interfaces.PositionValidator;
 
@@ -8,8 +9,8 @@ import java.util.List;
 
 public abstract class SlidingPiece extends Piece {
 
-    public SlidingPiece(Position position, PositionValidator positionValidator) {
-        super(position, positionValidator);
+    public SlidingPiece(Position position, PositionValidator positionValidator, Color color) {
+        super(position, positionValidator, color);
     }
 
     protected abstract List<Direction> getPossibleDirections();

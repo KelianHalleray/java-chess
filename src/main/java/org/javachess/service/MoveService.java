@@ -1,7 +1,9 @@
 package org.javachess.service;
 
+import org.javachess.entity.Chessboard;
 import org.javachess.entity.Piece;
 import org.javachess.entity.Position;
+import org.javachess.enums.Color;
 
 import java.util.List;
 
@@ -12,4 +14,13 @@ public class MoveService {
 
         return possiblePositions.contains(position);
     }
+
+    public boolean checkMovement(Piece piece, Chessboard chessboard, Position nextPosition) {
+        Piece pieceAtDestination = chessboard.getPieceFromPosition(nextPosition);
+        boolean isPositionEmpty = pieceAtDestination == null;
+        boolean isEnemy = !isPositionEmpty && (pieceAtDestination.getColor() != piece.getColor());
+
+        return isInMovePattern(piece, nextPosition) && (isEnemy || isPositionEmpty);
+    }
+
 }

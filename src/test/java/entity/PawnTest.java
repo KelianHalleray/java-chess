@@ -3,6 +3,7 @@ import org.javachess.entity.Chessboard;
 import org.javachess.entity.Pawn;
 import org.javachess.entity.Piece;
 import org.javachess.entity.Position;
+import org.javachess.enums.Color;
 import org.javachess.interfaces.PositionValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,17 +15,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PawnTest {
     private PositionValidator positionValidator;
+    private Color color;
 
     @BeforeEach
     void setUp() {
         positionValidator = new Chessboard();
+        color = Color.WHITE;
     }
 
     @Test
     void shouldReturnMovePattern() {
         // Given
         Position position = new Position(1, 1);
-        Piece pawn = new Pawn(position, positionValidator);
+        Piece pawn = new Pawn(position, positionValidator, color);
 
         // When
         List<Position> possiblePositions = pawn.getMovePattern();
@@ -37,7 +40,7 @@ class PawnTest {
     void shouldReturnAttackPattern() {
         // Given
         Position position = new Position(4, 2);
-        Pawn pawn = new Pawn(position, positionValidator);
+        Pawn pawn = new Pawn(position, positionValidator, color);
 
         // When
         List<Position> attackPositions = pawn.getAttackPattern();
@@ -50,7 +53,7 @@ class PawnTest {
     void shouldNotReturnInvalidPositionsInMovePattern() {
         // Given
         Position position = new Position(7, 7);
-        Piece pawn = new Pawn(position, positionValidator);
+        Piece pawn = new Pawn(position, positionValidator, color);
 
         // When
         List<Position> possiblePositions = pawn.getMovePattern();
@@ -64,7 +67,7 @@ class PawnTest {
     void shouldNotReturnInvalidPositionsInAttackPattern() {
         // Given
         Position position = new Position(7, 7);
-        Pawn pawn = new Pawn(position, positionValidator);
+        Pawn pawn = new Pawn(position, positionValidator, color);
 
         // When
         List<Position> attackPositions = pawn.getAttackPattern();

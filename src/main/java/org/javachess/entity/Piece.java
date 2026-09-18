@@ -1,5 +1,6 @@
 package org.javachess.entity;
 
+import org.javachess.enums.Color;
 import org.javachess.interfaces.PositionValidator;
 
 import java.util.ArrayList;
@@ -8,14 +9,20 @@ import java.util.List;
 abstract public class Piece {
     private Position position;
     private final PositionValidator positionValidator;
+    private final Color color;
 
-    public Piece(Position position, PositionValidator positionValidator) {
+    public Piece(Position position, PositionValidator positionValidator, Color color) {
         this.position = position;
         this.positionValidator = positionValidator;
+        this.color = color;
     }
 
     public Position getPosition() {
         return position;
+    }
+
+    public Color getColor() {
+        return color;
     }
 
     public void setPosition(Position position) {

@@ -5,6 +5,7 @@ import org.javachess.entity.Chessboard;
 import org.javachess.entity.King;
 import org.javachess.entity.Piece;
 import org.javachess.entity.Position;
+import org.javachess.enums.Color;
 import org.javachess.interfaces.PositionValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,10 +17,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class KingTest {
     private PositionValidator positionValidator;
+    private Color color;
 
     @BeforeEach
     void setUp() {
         positionValidator = new Chessboard();
+        color = Color.WHITE;
     }
 
     @Test
@@ -27,7 +30,7 @@ class KingTest {
         // Given
 
         Position position = new Position(3, 3);
-        Piece king = new King(position, positionValidator);
+        Piece king = new King(position, positionValidator, color);
 
         // When
         List<Position> possiblePositions = king.getMovePattern();
@@ -52,7 +55,7 @@ class KingTest {
     void shouldNotReturnInvalidPositionInMovePattern() {
         // Given
         Position position = new Position(7, 7);
-        Piece king = new King(position, positionValidator);
+        Piece king = new King(position, positionValidator, color);
 
         // When
         List<Position> possiblePositions = king.getMovePattern();

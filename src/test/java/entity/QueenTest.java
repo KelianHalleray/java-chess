@@ -4,6 +4,7 @@ import org.javachess.entity.Chessboard;
 import org.javachess.entity.Piece;
 import org.javachess.entity.Position;
 import org.javachess.entity.Queen;
+import org.javachess.enums.Color;
 import org.javachess.interfaces.PositionValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,17 +16,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class QueenTest {
     private PositionValidator positionValidator;
+    private Color color;
 
     @BeforeEach
     void setUp() {
         positionValidator = new Chessboard();
+        color = Color.WHITE;
     }
 
     @Test
     void shouldReturnMovePattern() {
         // Given
         Position position = new Position(3, 3);
-        Piece queen = new Queen(position, positionValidator);
+        Piece queen = new Queen(position, positionValidator, color);
 
         // When
         List<Position> possiblePositions = queen.getMovePattern();

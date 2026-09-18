@@ -1,13 +1,14 @@
 package org.javachess.entity;
 
+import org.javachess.enums.Color;
 import org.javachess.interfaces.PositionValidator;
 
 import java.util.List;
 
 public class Pawn extends Piece {
 
-    public Pawn(Position position, PositionValidator positionValidator) {
-        super(position, positionValidator);
+    public Pawn(Position position, PositionValidator positionValidator, Color color) {
+        super(position, positionValidator, color);
     }
 
     @Override

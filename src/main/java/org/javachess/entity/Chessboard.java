@@ -2,11 +2,27 @@ package org.javachess.entity;
 
 import org.javachess.interfaces.PositionValidator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Chessboard implements PositionValidator {
 
     private static final int BOARD_SIZE = 8;
+    private final List<Piece> pieces = new ArrayList<>();
 
-    public Chessboard() {
+    public void add(Piece... pieces) {
+        this.pieces.addAll(List.of(pieces));
+    }
+
+    public Piece getPieceFromPosition(Position position) {
+
+        for (Piece piece : pieces) {
+            if (piece.getPosition().equals(position)) {
+                return piece;
+            }
+        }
+
+        return null;
     }
 
     @Override
@@ -19,4 +35,5 @@ public class Chessboard implements PositionValidator {
 
         return isXValid && isYValid;
     }
+
 }
