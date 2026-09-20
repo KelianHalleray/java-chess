@@ -37,4 +37,43 @@ public abstract class SlidingPiece extends Piece {
 
         return possiblePositions;
     }
+
+    public List<Position> getPathTo(Position destination) {
+
+        int startPositionX = getPosition().getPosition_x();
+        int startPositionY = getPosition().getPosition_y();
+        int lastPositionX = destination.getPosition_x();
+        int lastPositionY = destination.getPosition_y();
+        List<Position> pathPosition = new ArrayList<>();
+
+        int stepPositionX = 0;
+        int stepPositionY = 0;
+
+        if (startPositionX < lastPositionX) {
+            stepPositionX = Direction.RIGHT.getDeltaX();
+        }
+        else if (startPositionX > lastPositionX) {
+            stepPositionX = Direction.LEFT.getDeltaX();
+        }
+
+        if (startPositionY < lastPositionY) {
+            stepPositionY = Direction.UP.getDeltaY();
+        }
+        else if (startPositionY > lastPositionY) {
+            stepPositionY = Direction.DOWN.getDeltaY();
+        }
+
+
+        int currentX = startPositionX + stepPositionX;
+        int currentY = startPositionY + stepPositionY;
+
+        while (currentX != lastPositionX || currentY != lastPositionY) {
+
+            pathPosition.add(new Position(currentX, currentY));
+            currentX += stepPositionX;
+            currentY += stepPositionY;
+        }
+
+        return pathPosition;
+    }
 }

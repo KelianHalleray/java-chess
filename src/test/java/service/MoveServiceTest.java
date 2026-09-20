@@ -137,4 +137,38 @@ class MoveServiceTest {
         assertTrue(canGoToPosition);
     }
 
+    @Test
+    void shouldReturnFalseWhenPieceIsBlockingPath() {
+        // Given
+        Position positionBishop = new Position(1, 1);
+        Position positionPawn = new Position(3, 3);
+        Piece pawn = new Pawn(positionPawn, positionValidator, whiteColor);
+        Piece bishop = new Bishop(positionBishop, positionValidator, whiteColor);
+        Position nextBishopPosition = new Position(5, 5);
+
+        chessboard.add(pawn, bishop);
+
+        // When
+        boolean canGoToPosition = moveService.checkMovement(bishop, chessboard, nextBishopPosition);
+
+        // Then
+        assertFalse(canGoToPosition);
+    }
+
+    @Test
+    void shouldReturnTrueWhenKnightMovesToValidEmptyPosition() {
+        // Given
+        Position positionKnight = new Position(3, 3);
+        Piece knight = new Knight(positionKnight, positionValidator, whiteColor);
+        Position nextPosition = new Position(1, 4);
+
+        chessboard.add(knight);
+
+        // When
+        boolean canGoToPosition = moveService.checkMovement(knight, chessboard, nextPosition);
+
+        // Then
+        assertTrue(canGoToPosition);
+    }
+
 }
