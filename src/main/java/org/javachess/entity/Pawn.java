@@ -15,8 +15,7 @@ public class Pawn extends Piece {
     public List<Position> getMovePattern() {
         Position position = getPosition();
         List<Position> candidates = List.of(
-                new Position(position.getPosition_x(), position.getPosition_y() + 1),
-                new Position(position.getPosition_x(), position.getPosition_y() + 2)
+                new Position(position.getPosition_x(), position.getPosition_y() + 1)
         );
 
         return filterCandidates(candidates);

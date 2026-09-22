@@ -33,7 +33,7 @@ class PawnTest {
         List<Position> possiblePositions = pawn.getMovePattern();
 
         // Then
-        assertEquals(List.of(new Position(1,2), new Position(1,3)),possiblePositions);
+        assertEquals(List.of(new Position(1,2)),possiblePositions);
     }
 
     @Test

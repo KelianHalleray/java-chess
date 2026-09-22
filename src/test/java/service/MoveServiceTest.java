@@ -226,4 +226,71 @@ class MoveServiceTest {
         assertFalse(pawnEnemyExists);
     }
 
+    @Test
+    void shouldNotAllowPawnToCaptureForward() {
+        // Given
+        Position position = new Position(3, 3);
+        Piece pawn = new Pawn(position, positionValidator, whiteColor);
+        Position pawnEnemyPosition = new Position(3, 4);
+        Piece pawnEnemy = new Pawn(pawnEnemyPosition, positionValidator, blackColor);
+        Position pawnNextPosition = new Position(3, 4);
+
+        chessboard.add(pawn, pawnEnemy);
+
+        // When
+        boolean canGoToPosition = moveService.checkMovement(pawn, chessboard, pawnNextPosition);
+
+        // Then
+        assertFalse(canGoToPosition);
+    }
+
+    @Test
+    void shouldAllowPawnToCaptureOnDiagonal() {
+        // Given
+        Position positionPawn = new Position(3, 3);
+        Piece pawn = new Pawn(positionPawn, positionValidator, whiteColor);
+        Position pawnEnemyPosition = new Position(4, 4);
+        Piece pawnEnemy = new Pawn(pawnEnemyPosition, positionValidator, blackColor);
+        Position nextPosition = new Position(4, 4);
+
+        chessboard.add(pawn, pawnEnemy);
+
+        // When
+        boolean canGoToPosition = moveService.checkMovement(pawn, chessboard, nextPosition);
+
+        // Then
+        assertTrue(canGoToPosition);
+    }
+
+    @Test
+    void shouldAllowPawnToGoForwardIfEmpty() {
+        // Given
+        Position positionPawn = new Position(3, 3);
+        Piece pawn = new Pawn(positionPawn, positionValidator, whiteColor);
+        Position nextPosition = new Position(3, 4);
+
+        chessboard.add(pawn);
+
+        // When
+        boolean canGoToPosition = moveService.checkMovement(pawn, chessboard, nextPosition);
+
+        // Then
+        assertTrue(canGoToPosition);
+    }
+
+    @Test
+    void shouldNotAllowPawnToGoDiagonalIfEmpty() {
+        // Given
+        Position positionPawn = new Position(3, 3);
+        Piece pawn = new Pawn(positionPawn, positionValidator, whiteColor);
+        Position nextPosition = new Position(4, 4);
+
+        chessboard.add(pawn);
+        // When
+        boolean canGoToPosition = moveService.checkMovement(pawn, chessboard, nextPosition);
+
+        // Then
+        assertFalse(canGoToPosition);
+    }
+
 }

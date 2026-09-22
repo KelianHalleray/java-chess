@@ -1,10 +1,6 @@
 package org.javachess.service;
 
 import org.javachess.entity.*;
-import org.javachess.enums.Color;
-import org.javachess.enums.Direction;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class MoveService {
@@ -19,6 +15,10 @@ public class MoveService {
         Piece pieceAtDestination = chessboard.getPieceFromPosition(nextPosition);
         boolean isPositionEmpty = pieceAtDestination == null;
         boolean isEnemy = !isPositionEmpty && (pieceAtDestination.getColor() != piece.getColor());
+
+        if (piece instanceof Pawn pawn && isEnemy) {
+            return pawn.getAttackPattern().contains(nextPosition);
+        }
 
         if (piece instanceof SlidingPiece slidingPiece) {
             return isInMovePattern(piece, nextPosition)
