@@ -14,6 +14,10 @@ public class Chessboard implements PositionValidator {
         this.pieces.addAll(List.of(pieces));
     }
 
+    public void remove(Piece piece) {
+        this.pieces.remove(piece);
+    }
+
     public Piece getPieceFromPosition(Position position) {
 
         for (Piece piece : pieces) {
@@ -23,6 +27,10 @@ public class Chessboard implements PositionValidator {
         }
 
         return null;
+    }
+
+    public boolean exists(Piece piece) {
+        return pieces.contains(piece);
     }
 
     @Override
@@ -35,5 +43,6 @@ public class Chessboard implements PositionValidator {
 
         return isXValid && isYValid;
     }
+
 
 }

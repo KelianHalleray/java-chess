@@ -1,9 +1,6 @@
 package org.javachess.service;
 
-import org.javachess.entity.Chessboard;
-import org.javachess.entity.Piece;
-import org.javachess.entity.Position;
-import org.javachess.entity.SlidingPiece;
+import org.javachess.entity.*;
 import org.javachess.enums.Color;
 import org.javachess.enums.Direction;
 
@@ -43,6 +40,17 @@ public class MoveService {
 
         return true;
 
+    }
+
+    public void makeMovement(Piece piece, Chessboard chessboard, Position destination) {
+        Piece pieceAtDestination = chessboard.getPieceFromPosition(destination);
+
+        if (checkMovement(piece, chessboard, destination)) {
+            if (pieceAtDestination != null) {
+                chessboard.remove(pieceAtDestination);
+            }
+            piece.setPosition(destination);
+        }
     }
 
 }

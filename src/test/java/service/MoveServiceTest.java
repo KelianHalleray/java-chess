@@ -6,9 +6,7 @@ import org.javachess.interfaces.PositionValidator;
 import org.javachess.service.MoveService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class MoveServiceTest {
     private MoveService moveService;
@@ -169,6 +167,63 @@ class MoveServiceTest {
 
         // Then
         assertTrue(canGoToPosition);
+    }
+
+    @Test
+    void shouldMovePieceToValidDestination() {
+        // Given
+        Position positionBishop = new Position(3, 3);
+        Piece bishop = new Bishop(positionBishop, positionValidator, whiteColor);
+        Position nextPosition = new Position(5, 5);
+        chessboard.add(bishop);
+
+        // When
+        moveService.makeMovement(bishop,chessboard, nextPosition);
+        Position newBishopPosition = bishop.getPosition();
+
+        // Then
+        assertEquals(nextPosition, newBishopPosition);
+    }
+
+    @Test
+    void shouldNotMovePieceToInvalidDestination() {
+        // Given
+        Position position = new Position(3, 3);
+        Piece bishop = new Bishop(position, positionValidator, whiteColor);
+        Position nextPosition = new Position(4, 4);
+        Position pawnPosition = new Position(4, 4);
+        Piece pawn = new Pawn(pawnPosition, positionValidator, whiteColor);
+
+        chessboard.add(bishop, pawn);
+
+        // When
+        moveService.makeMovement(bishop, chessboard, nextPosition);
+        Position newPosition = bishop.getPosition();
+
+        // Then
+        assertEquals(position, newPosition);
+
+    }
+
+    @Test
+    void shouldCaptureEnemyPieceOnDestination() {
+        // Given
+        Position positionBishop = new Position(3, 3);
+        Piece bishop = new Bishop(positionBishop, positionValidator, whiteColor);
+        Position positionPawnEnemy = new Position(5, 5);
+        Piece pawnEnemy = new Pawn(positionPawnEnemy, positionValidator, blackColor);
+        Position nextBishopPosition = new Position(5, 5);
+
+        chessboard.add(bishop, pawnEnemy);
+
+        // When
+        moveService.makeMovement(bishop, chessboard, nextBishopPosition);
+        Position newBishopPosition = bishop.getPosition();
+        boolean pawnEnemyExists = chessboard.exists(pawnEnemy);
+
+        // Then
+        assertEquals(nextBishopPosition, newBishopPosition);
+        assertFalse(pawnEnemyExists);
     }
 
 }
