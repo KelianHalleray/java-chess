@@ -1,8 +1,10 @@
 package org.javachess.entity;
 
 import org.javachess.enums.Color;
+import org.javachess.enums.Direction;
 import org.javachess.interfaces.PositionValidator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Pawn extends Piece {
@@ -14,20 +16,33 @@ public class Pawn extends Piece {
     @Override
     public List<Position> getMovePattern() {
         Position position = getPosition();
-        List<Position> candidates = List.of(
-                new Position(position.getPosition_x(), position.getPosition_y() + 1)
-        );
+        List<Position> candidates = new ArrayList<>();
+
+        int nextYPosition = position.getPosition_y() + getForwardDirection().getDeltaY();
+
+        candidates.add(new Position(position.getPosition_x(), nextYPosition));
 
         return filterCandidates(candidates);
     }
 
     public List<Position> getAttackPattern() {
         Position position = getPosition();
+
+        int nextYPosition = position.getPosition_y() + getForwardDirection().getDeltaY();
+
         List<Position> candidates = List.of(
-                new Position(position.getPosition_x() - 1, position.getPosition_y() + 1),
-                new Position(position.getPosition_x() + 1, position.getPosition_y() + 1)
+                new Position(position.getPosition_x() - 1, nextYPosition),
+                new Position(position.getPosition_x() + 1, nextYPosition)
         );
 
         return filterCandidates(candidates);
+    }
+
+    private Direction getForwardDirection() {
+        if (getColor() == Color.BLACK) {
+            return Direction.DOWN;
+        }
+
+        return Direction.UP;
     }
 }
