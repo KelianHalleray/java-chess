@@ -19,6 +19,11 @@ public class Pawn extends Piece {
         List<Position> candidates = new ArrayList<>();
 
         int nextYPosition = position.getPosition_y() + getForwardDirection().getDeltaY();
+        int nextYPositionDouble = position.getPosition_y() + (getForwardDirection().getDeltaY() * 2);
+
+        if (isOnInitialRank(position)) {
+            candidates.add(new Position(position.getPosition_x(), nextYPositionDouble));
+        }
 
         candidates.add(new Position(position.getPosition_x(), nextYPosition));
 
@@ -38,11 +43,31 @@ public class Pawn extends Piece {
         return filterCandidates(candidates);
     }
 
+    private boolean isOnInitialRank(Position position) {
+        return getColor() == Color.WHITE && position.getPosition_y() == 1
+                || getColor() == Color.BLACK && position.getPosition_y() == 6;
+    }
+
     private Direction getForwardDirection() {
         if (getColor() == Color.BLACK) {
             return Direction.DOWN;
         }
 
         return Direction.UP;
+    }
+
+    public Position getPositionInFront() {
+        Position currentPosition = getPosition();
+
+        int nextPositionY = currentPosition.getPosition_y() + getForwardDirection().getDeltaY();
+
+        return new Position(currentPosition.getPosition_x(), nextPositionY);
+    }
+
+    public boolean isDoubleMove(Position destination) {
+        int currentY = getPosition().getPosition_y();
+        int nextY = destination.getPosition_y();
+
+        return Math.abs(currentY - nextY) == 2;
     }
 }

@@ -1,6 +1,7 @@
 package org.javachess.service;
 
 import org.javachess.entity.*;
+
 import java.util.List;
 
 public class MoveService {
@@ -16,8 +17,20 @@ public class MoveService {
         boolean isPositionEmpty = pieceAtDestination == null;
         boolean isEnemy = !isPositionEmpty && (pieceAtDestination.getColor() != piece.getColor());
 
-        if (piece instanceof Pawn pawn && isEnemy) {
-            return pawn.getAttackPattern().contains(nextPosition);
+        if (piece instanceof Pawn pawn) {
+
+            if (isEnemy) {
+                return pawn.getAttackPattern().contains(nextPosition);
+            }
+
+            if (pawn.isDoubleMove(nextPosition)) {
+                Position pawnPositionInFront = pawn.getPositionInFront();
+
+                if (chessboard.getPieceFromPosition(pawnPositionInFront) != null) {
+                    return false;
+                }
+            }
+
         }
 
         if (piece instanceof SlidingPiece slidingPiece) {

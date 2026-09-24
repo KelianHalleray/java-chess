@@ -30,14 +30,14 @@ class PawnTest {
     @Test
     void shouldReturnMovePattern() {
         // Given
-        Position position = new Position(1, 1);
+        Position position = new Position(3, 3);
         Piece pawn = new Pawn(position, positionValidator, colorWhite);
 
         // When
         List<Position> possiblePositions = pawn.getMovePattern();
 
         // Then
-        assertEquals(List.of(new Position(1,2)),possiblePositions);
+        assertEquals(List.of(new Position(3,4)),possiblePositions);
     }
 
     @Test
@@ -144,6 +144,40 @@ class PawnTest {
 
         // Then
         assertEquals(new HashSet<>(realPossibleAttackPositions), new HashSet<>(possibleAttackPositions));
+    }
+
+    @Test
+    void shouldReturnTwoPossiblePositionsWhenWhitePawnIsOnInitialPosition() {
+        // Given
+        Position position = new Position(1, 1);
+        Pawn pawn = new Pawn(position, positionValidator, colorWhite);
+
+        // When
+        List<Position> possiblePositions = pawn.getMovePattern();
+        List<Position> realPossiblePositions = List.of(
+               new Position(1, 2),
+               new Position(1, 3)
+        );
+
+        // Then
+        assertEquals(new HashSet<>(realPossiblePositions), new HashSet<>(possiblePositions));
+    }
+
+    @Test
+    void shouldReturnTwoPossiblePositionsWhenBlackIsOnInitialPosition() {
+        // Given
+        Position position = new Position(6, 6);
+        Pawn pawn = new Pawn(position, positionValidator, colorBlack);
+
+        // When
+        List<Position> possiblePositions = pawn.getMovePattern();
+        List<Position> realPossiblePositions = List.of(
+                new Position(6, 5),
+                new Position(6, 4)
+        );
+
+        // Then
+        assertEquals(new HashSet<>(realPossiblePositions), new HashSet<>(possiblePositions));
     }
 
 }

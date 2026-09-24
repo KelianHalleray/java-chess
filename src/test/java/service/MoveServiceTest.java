@@ -293,4 +293,59 @@ class MoveServiceTest {
         assertFalse(canGoToPosition);
     }
 
+    @Test
+    void shouldAllowPawnToMoveTwoSquaresWhenPathIsClear() {
+        // Given
+        Position position = new Position(1, 1);
+        Piece pawn = new Pawn(position, positionValidator, whiteColor);
+        Position nextPosition = new Position(1, 3);
+
+
+        chessboard.add(pawn);
+
+        // When
+        boolean canGoToPosition = moveService.checkMovement(pawn, chessboard, nextPosition);
+
+        // Then
+        assertTrue(canGoToPosition);
+    }
+
+    @Test
+    void shouldNotAllowWhitePawnToMoveTwoSquaresWhenPathIsBlocked() {
+        // Given
+        Position position = new Position(1, 1);
+        Piece pawn = new Pawn(position, positionValidator, whiteColor);
+        Position nextPawnPosition = new Position(1, 3);
+        Position allyPawnPosition = new Position(1, 2);
+        Piece allyPawn = new Pawn(allyPawnPosition, positionValidator, whiteColor);
+
+        chessboard.add(pawn, allyPawn);
+
+        // When
+        boolean canGoToPosition = moveService.checkMovement(pawn, chessboard, nextPawnPosition);
+
+        // Then
+        assertFalse(canGoToPosition);
+    }
+
+    @Test
+    void shouldNotAllowBlackPawnToMoveTwoSquaresWhenPathIsBlocked() {
+        // Given
+        Position position = new Position(6, 6);
+        Piece pawn = new Pawn(position , positionValidator, blackColor);
+        Position nextPosition = new Position(6, 4);
+        Position allyPawnPosition = new Position(6, 5);
+        Piece allyPawn = new Pawn(allyPawnPosition, positionValidator, blackColor);
+
+        chessboard.add(pawn, allyPawn);
+
+        // When
+        boolean canGoToPosition = moveService.checkMovement(pawn, chessboard, nextPosition);
+
+        // Then
+        assertFalse(canGoToPosition);
+    }
+
+
+
 }
