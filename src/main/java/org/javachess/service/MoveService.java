@@ -1,6 +1,7 @@
 package org.javachess.service;
 
 import org.javachess.entity.*;
+import org.javachess.enums.Color;
 
 import java.util.List;
 
@@ -64,6 +65,36 @@ public class MoveService {
             }
             piece.setPosition(destination);
         }
+    }
+
+    public boolean canAttack(Piece piece, Chessboard chessboard, Position position) {
+
+        if (piece instanceof Pawn pawn) {
+            return pawn.getAttackPattern().contains(position);
+        }
+
+        if (piece instanceof SlidingPiece slidingPiece) {
+            return hasNoPiecesOnPath(slidingPiece, chessboard, position)
+                    && piece.getMovePattern().contains(position);
+        }
+
+        return piece.getMovePattern().contains(position);
+    }
+
+    public boolean isKingAttacked(Chessboard chessboard, Color color) {
+        King king = chessboard.findKing(color);
+        Position kingPosition = king.getPosition();
+
+        for (Piece piece : chessboard.getPieces()) {
+            boolean isEnemy = piece.getColor() != color;
+
+            if (isEnemy && canAttack(piece, chessboard, kingPosition)) {
+                return true;
+
+            }
+        }
+
+        return false;
     }
 
 }

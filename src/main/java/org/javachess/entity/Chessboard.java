@@ -1,5 +1,6 @@
 package org.javachess.entity;
 
+import org.javachess.enums.Color;
 import org.javachess.interfaces.PositionValidator;
 
 import java.util.ArrayList;
@@ -43,6 +44,22 @@ public class Chessboard implements PositionValidator {
 
         return isXValid && isYValid;
     }
+    
+    public King findKing(Color pieceColor) {
+        
+        for (Piece piece : pieces) {
+            if (piece instanceof King k) {
+                if (k.getColor() == pieceColor) {
+                    return k;
+                }
+            }
+        }
 
+        return null;
+    }
+
+    public List<Piece> getPieces() {
+        return new ArrayList<>(pieces);
+    }
 
 }
