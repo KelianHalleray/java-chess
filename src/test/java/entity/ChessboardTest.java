@@ -1,8 +1,6 @@
 package entity;
 
-import org.javachess.entity.Chessboard;
-import org.javachess.entity.King;
-import org.javachess.entity.Position;
+import org.javachess.entity.*;
 import org.javachess.enums.Color;
 import org.junit.jupiter.api.Test;
 
@@ -98,5 +96,35 @@ class ChessboardTest {
 
         // Then
         assertEquals(whiteKing, foundKing);
+    }
+
+    @Test
+    void shouldReturnChessboardCopy() {
+        // Given
+        Chessboard chessboard = new Chessboard();
+
+        /*
+        *  Initialisation des pièces du chessboard
+         */
+        Position pawnPosition = new Position(3, 2);
+        Piece pawn = new Pawn(pawnPosition, chessboard, Color.WHITE);
+
+        Position kingPosition = new Position(3, 4);
+        Piece king = new King(kingPosition, chessboard, Color.WHITE);
+
+        chessboard.add(pawn, king);
+
+        // When
+        Chessboard copiedChessboard = chessboard.copy();
+        Piece copiedKing = copiedChessboard.getPieceFromPosition(kingPosition);
+        Piece copiedPawn = copiedChessboard.getPieceFromPosition(pawnPosition);
+
+        // Then
+        assertNotSame(chessboard, copiedChessboard);
+        assertEquals(chessboard.getPieces().size(), copiedChessboard.getPieces().size());
+        assertNotNull(copiedKing);
+        assertNotNull(copiedPawn);
+        assertNotSame(king, copiedKing);
+        assertNotSame(pawn, copiedPawn);
     }
 }

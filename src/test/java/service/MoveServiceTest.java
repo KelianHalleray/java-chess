@@ -6,12 +6,16 @@ import org.javachess.interfaces.PositionValidator;
 import org.javachess.service.MoveService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.PipedOutputStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class MoveServiceTest {
     private MoveService moveService;
     private PositionValidator positionValidator;
     private Chessboard chessboard;
+    private King globalKing;
     private Color blackColor;
     private Color whiteColor;
 
@@ -22,6 +26,7 @@ class MoveServiceTest {
         positionValidator = chessboard;
         blackColor = Color.BLACK;
         whiteColor = Color.WHITE;
+        globalKing = new King(new Position( 2, 2), positionValidator, whiteColor);
     }
 
     @Test
@@ -77,7 +82,7 @@ class MoveServiceTest {
         Piece queen = new Queen(queenPosition, positionValidator, whiteColor);
         Position nextChosenPosition = new Position(3, 4);
 
-        chessboard.add(queen);
+        chessboard.add(queen, globalKing);
 
         // When
         boolean canGoToPosition = moveService.checkMovement(queen, chessboard, nextChosenPosition);
@@ -96,7 +101,7 @@ class MoveServiceTest {
         Position enemyPawnPosition = new Position(3, 4);
         Piece enemyPawn = new Pawn(enemyPawnPosition, positionValidator, blackColor);
 
-        chessboard.add(queen, enemyPawn);
+        chessboard.add(queen, enemyPawn, globalKing);
 
         // When
         boolean canGoToPosition = moveService.checkMovement(queen, chessboard, nextChosenPosition);
@@ -112,6 +117,7 @@ class MoveServiceTest {
         Piece bishop = new Bishop(position, positionValidator, whiteColor);
         Position nextPosition = new Position(3, 4);
 
+        chessboard.add(bishop, globalKing);
 
         // When
         boolean canGoToPosition = moveService.checkMovement(bishop, chessboard, nextPosition);
@@ -128,6 +134,7 @@ class MoveServiceTest {
         Piece bishop = new Bishop(position, positionValidator, whiteColor);
         Position nextPosition = new Position(4, 4);
 
+        chessboard.add(bishop, globalKing);
         // When
         boolean canGoToPosition = moveService.checkMovement(bishop, chessboard, nextPosition);
 
@@ -144,7 +151,7 @@ class MoveServiceTest {
         Piece bishop = new Bishop(positionBishop, positionValidator, whiteColor);
         Position nextBishopPosition = new Position(5, 5);
 
-        chessboard.add(pawn, bishop);
+        chessboard.add(pawn, bishop, globalKing);
 
         // When
         boolean canGoToPosition = moveService.checkMovement(bishop, chessboard, nextBishopPosition);
@@ -160,7 +167,7 @@ class MoveServiceTest {
         Piece knight = new Knight(positionKnight, positionValidator, whiteColor);
         Position nextPosition = new Position(1, 4);
 
-        chessboard.add(knight);
+        chessboard.add(knight, globalKing);
 
         // When
         boolean canGoToPosition = moveService.checkMovement(knight, chessboard, nextPosition);
@@ -175,7 +182,7 @@ class MoveServiceTest {
         Position positionBishop = new Position(3, 3);
         Piece bishop = new Bishop(positionBishop, positionValidator, whiteColor);
         Position nextPosition = new Position(5, 5);
-        chessboard.add(bishop);
+        chessboard.add(bishop, globalKing);
 
         // When
         moveService.makeMovement(bishop,chessboard, nextPosition);
@@ -214,7 +221,7 @@ class MoveServiceTest {
         Piece pawnEnemy = new Pawn(positionPawnEnemy, positionValidator, blackColor);
         Position nextBishopPosition = new Position(5, 5);
 
-        chessboard.add(bishop, pawnEnemy);
+        chessboard.add(bishop, pawnEnemy, globalKing);
 
         // When
         moveService.makeMovement(bishop, chessboard, nextBishopPosition);
@@ -253,7 +260,7 @@ class MoveServiceTest {
         Piece pawnEnemy = new Pawn(pawnEnemyPosition, positionValidator, blackColor);
         Position nextPosition = new Position(4, 4);
 
-        chessboard.add(pawn, pawnEnemy);
+        chessboard.add(pawn, pawnEnemy, globalKing);
 
         // When
         boolean canGoToPosition = moveService.checkMovement(pawn, chessboard, nextPosition);
@@ -269,7 +276,7 @@ class MoveServiceTest {
         Piece pawn = new Pawn(positionPawn, positionValidator, whiteColor);
         Position nextPosition = new Position(3, 4);
 
-        chessboard.add(pawn);
+        chessboard.add(pawn, globalKing);
 
         // When
         boolean canGoToPosition = moveService.checkMovement(pawn, chessboard, nextPosition);
@@ -301,7 +308,7 @@ class MoveServiceTest {
         Position nextPosition = new Position(1, 3);
 
 
-        chessboard.add(pawn);
+        chessboard.add(pawn, globalKing);
 
         // When
         boolean canGoToPosition = moveService.checkMovement(pawn, chessboard, nextPosition);
@@ -404,5 +411,50 @@ class MoveServiceTest {
 
     }
 
+    @Test
+    void shouldNotAllowMoveWhenPieceIsProtectingKing() {
+        // Given
+        Position positionKing = new Position(3, 3);
+        Piece king = new King(positionKing, positionValidator, whiteColor);
+
+        Position positionPawn = new Position(4,4);
+        Piece pawn = new Pawn(positionPawn, positionValidator, whiteColor);
+        Position nextPawnPosition = new Position(4,5);
+
+        Position positionBishop = new Position(6, 6);
+        Piece bishopEnemy = new Bishop(positionBishop, positionValidator, blackColor);
+
+
+        chessboard.add(pawn, king, bishopEnemy);
+
+        // When
+        boolean canGoToPosition = moveService.checkMovement(pawn, chessboard, nextPawnPosition);
+
+        // Then
+        assertFalse(canGoToPosition);
+    }
+
+    @Test
+    void shouldNotAllowCaptureWhenItExposesKing() {
+        // Given
+        Position positionPawnAlly = new Position(4 ,4);
+        Piece pawnAlly = new Pawn(positionPawnAlly, positionValidator, whiteColor);
+
+        Position positionKingAlly = new Position(3, 3);
+        Piece kingAlly = new King(positionKingAlly, positionValidator, whiteColor);
+
+        Position positionBishopEnemy = new Position(6, 6);
+        Piece bishopEnemy = new Bishop(positionBishopEnemy, positionValidator, blackColor);
+
+        Position positionPawnEnemy = new Position(3, 5);
+        Piece pawnEnemy = new Pawn(positionPawnEnemy, positionValidator, blackColor);
+
+        chessboard.add(pawnAlly, kingAlly, bishopEnemy, pawnEnemy);
+
+        boolean canGoToPosition = moveService.checkMovement(pawnAlly, chessboard, positionPawnEnemy);
+
+        // Then
+        assertFalse(canGoToPosition);
+    }
 
 }

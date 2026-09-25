@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 class KnightTest {
     private PositionValidator positionValidator;
@@ -58,6 +59,23 @@ class KnightTest {
 
         // Then
         assertEquals(2, possiblePositions.size());
+    }
+
+    @Test
+    void shouldReturnKnightCopy() {
+        // Given
+        Position position = new Position(3, 3);
+        Piece knight = new Knight(position, positionValidator, color);
+
+        Chessboard copiedChessboard = new Chessboard();
+
+        // When
+        Piece copiedKnight = knight.copy(copiedChessboard);
+
+        // Then
+        assertNotSame(knight, copiedKnight);
+        assertEquals(knight.getPosition(), copiedKnight.getPosition());
+        assertEquals(knight.getColor(), copiedKnight.getColor());
     }
 
 }

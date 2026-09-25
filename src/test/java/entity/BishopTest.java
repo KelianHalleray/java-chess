@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 class BishopTest {
     private PositionValidator positionValidator;
@@ -54,5 +55,22 @@ class BishopTest {
 
         assertEquals(new HashSet<>(realListPositions), new HashSet<>(possiblePositions));
         assertEquals(13, possiblePositions.size());
+    }
+
+    @Test
+    void shouldReturnBishopCopy() {
+        // Given
+        Position position = new Position(3, 3);
+        Piece bishop = new Bishop(position, positionValidator, Color.WHITE);
+
+        Chessboard copiedChessboard = new Chessboard();
+
+        // When
+        Piece copiedBishop = bishop.copy(copiedChessboard);
+
+        // Then
+        assertNotSame(bishop, copiedBishop);
+        assertEquals(bishop.getPosition(), copiedBishop.getPosition());
+        assertEquals(bishop.getColor(), copiedBishop.getColor());
     }
 }

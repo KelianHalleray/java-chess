@@ -29,5 +29,10 @@ public class Knight extends Piece {
         return filterCandidates(candidates);
     }
 
+    @Override
+    public Piece copy(PositionValidator positionValidator) {
+        return new Knight(getPosition(), positionValidator, getColor());
+    }
+
 
 }

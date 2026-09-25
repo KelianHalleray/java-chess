@@ -12,8 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class KingTest {
     private PositionValidator positionValidator;
@@ -62,5 +61,22 @@ class KingTest {
 
         // Then
         assertEquals(3, possiblePositions.size());
+    }
+
+    @Test
+    void shouldReturnKingCopy() {
+        // Given
+        Position position = new Position(3, 3);
+        Piece king = new King(position, positionValidator, Color.WHITE);
+
+        Chessboard copiedChessboard = new Chessboard();
+
+        // When
+        Piece copiedKing = king.copy(copiedChessboard);
+
+        // Then
+        assertNotSame(king, copiedKing);
+        assertEquals(king.getColor(), copiedKing.getColor());
+        assertEquals(king.getPosition(), copiedKing.getPosition());
     }
 }

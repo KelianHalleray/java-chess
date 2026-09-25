@@ -24,5 +24,10 @@ public class Bishop extends SlidingPiece {
         return POSSIBLE_DIRECTIONS;
     }
 
+    @Override
+    public Piece copy(PositionValidator positionValidator) {
+        return new Bishop(getPosition(), positionValidator, getColor());
+    }
+
 
 }

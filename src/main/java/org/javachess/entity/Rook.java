@@ -25,4 +25,9 @@ public class Rook extends SlidingPiece {
         return POSSIBLE_DIRECTIONS;
     }
 
+    @Override
+    public Piece copy(PositionValidator positionValidator) {
+        return new Rook(getPosition(), positionValidator, getColor());
+    }
+
 }

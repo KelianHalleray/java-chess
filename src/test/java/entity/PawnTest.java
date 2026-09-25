@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 class PawnTest {
     private PositionValidator positionValidator;
@@ -178,6 +179,22 @@ class PawnTest {
 
         // Then
         assertEquals(new HashSet<>(realPossiblePositions), new HashSet<>(possiblePositions));
+    }
+
+    @Test
+    void shouldReturnPawnCopy() {
+        // Given
+        Position position = new Position(3, 3);
+        Piece pawn = new Pawn(position, positionValidator, colorBlack);
+
+        Chessboard copiedChessboard = new Chessboard();
+        // When
+        Piece copiedPawn = pawn.copy(copiedChessboard);
+
+        // Then
+        assertNotSame(pawn, copiedPawn);
+        assertEquals(pawn.getColor(), copiedPawn.getColor());
+        assertEquals(pawn.getPosition(), copiedPawn.getPosition());
     }
 
 }

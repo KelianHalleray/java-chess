@@ -29,4 +29,10 @@ public class King extends Piece {
 
         return filterCandidates(candidates);
     }
+
+    @Override
+    public Piece copy(PositionValidator positionValidator) {
+        return new King(getPosition(), positionValidator, getColor());
+    }
+
 }

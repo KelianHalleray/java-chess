@@ -46,4 +46,6 @@ abstract public class Piece {
     }
 
     abstract public List<Position> getMovePattern();
+
+    abstract public Piece copy(PositionValidator positionValidator);
 }

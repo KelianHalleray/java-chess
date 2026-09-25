@@ -28,4 +28,9 @@ public class Queen extends SlidingPiece {
         return POSSIBLE_DIRECTIONS;
     }
 
+    @Override
+    public Piece copy(PositionValidator positionValidator) {
+        return new Queen(getPosition(), positionValidator, getColor());
+    }
+
 }

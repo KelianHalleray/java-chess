@@ -30,6 +30,11 @@ public class Pawn extends Piece {
         return filterCandidates(candidates);
     }
 
+    @Override
+    public Piece copy(PositionValidator positionValidator) {
+        return new Pawn(getPosition(), positionValidator, getColor());
+    }
+
     public List<Position> getAttackPattern() {
         Position position = getPosition();
 

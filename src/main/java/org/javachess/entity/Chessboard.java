@@ -58,6 +58,17 @@ public class Chessboard implements PositionValidator {
         return null;
     }
 
+    public Chessboard copy() {
+        Chessboard chessboard = new Chessboard();
+
+        for (Piece piece : pieces) {
+            Piece copiedPiece = piece.copy(chessboard);
+            chessboard.add(copiedPiece);
+        }
+
+        return chessboard;
+    }
+
     public List<Piece> getPieces() {
         return new ArrayList<>(pieces);
     }
