@@ -3,6 +3,8 @@ package org.javachess.service;
 import org.javachess.entity.*;
 import org.javachess.enums.Color;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class MoveService {
@@ -49,8 +51,8 @@ public class MoveService {
         }
 
         if (piece instanceof SlidingPiece slidingPiece) {
-            return hasNoPiecesOnPath(slidingPiece, chessboard, position)
-                    && piece.getMovePattern().contains(position);
+            return piece.getMovePattern().contains(position)
+                    && hasNoPiecesOnPath(slidingPiece, chessboard, position);
         }
 
         return piece.getMovePattern().contains(position);
@@ -107,9 +109,33 @@ public class MoveService {
     public boolean checkKingSafeRules(Piece piece, Chessboard chessboard, Position nextPosition) {
         Chessboard simulatedChessboard = chessboard.copy();
         Piece currentSimulatedPiece = simulatedChessboard.getPieceFromPosition(piece.getPosition());
+        Piece nextPiece = simulatedChessboard.getPieceFromPosition(nextPosition);
+
+        if (nextPiece != null) {
+            simulatedChessboard.remove(nextPiece);
+        }
+
         currentSimulatedPiece.setPosition(nextPosition);
 
+
         return !isKingAttacked(simulatedChessboard, currentSimulatedPiece.getColor());
+    }
+
+
+    public boolean isCheckmate(Chessboard chessboard, Color color) {
+        King king = chessboard.findKing(color);
+
+        for (Piece piece : chessboard.getPieces()) {
+            if (piece.getColor() == king.getColor()) {
+                for (Position position : piece.getMovePattern()) {
+                    if (checkMovement(piece, chessboard, position)) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
     }
 
 }
