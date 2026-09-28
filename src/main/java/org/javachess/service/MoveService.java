@@ -3,8 +3,6 @@ package org.javachess.service;
 import org.javachess.entity.*;
 import org.javachess.enums.Color;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class MoveService {
@@ -123,10 +121,16 @@ public class MoveService {
 
 
     public boolean isCheckmate(Chessboard chessboard, Color color) {
-        King king = chessboard.findKing(color);
+        return isKingAttacked(chessboard, color) && hasNoLegalMoveForColor(chessboard, color);
+    }
 
+    public boolean isStalemate(Chessboard chessboard, Color color) {
+        return !isKingAttacked(chessboard, color) && hasNoLegalMoveForColor(chessboard, color);
+    }
+
+    private boolean hasNoLegalMoveForColor(Chessboard chessboard, Color color) {
         for (Piece piece : chessboard.getPieces()) {
-            if (piece.getColor() == king.getColor()) {
+            if (color == piece.getColor()) {
                 for (Position position : piece.getMovePattern()) {
                     if (checkMovement(piece, chessboard, position)) {
                         return false;

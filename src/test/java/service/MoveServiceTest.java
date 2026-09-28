@@ -7,6 +7,8 @@ import org.javachess.service.MoveService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class MoveServiceTest {
@@ -524,6 +526,52 @@ class MoveServiceTest {
 
         // Then
         assertFalse(isCheckmate);
+    }
+
+    @Test
+    void shouldReturnTrueWhenKingIsSafeButBlocked() {
+        // Given
+        Position positionKing = new Position(3, 0);
+        Piece king = new King(positionKing, positionValidator, whiteColor);
+
+        Position positionQueenEnemy = new Position(2, 2);
+        Piece queenEnemy = new Queen(positionQueenEnemy, positionValidator, blackColor);
+
+        Position positionRookEnemy = new Position(4, 2);
+        Piece rookEnemy = new Rook(positionRookEnemy, positionValidator, blackColor);
+
+        chessboard.add(king, queenEnemy, rookEnemy);
+
+        // When
+        boolean isStalemate = moveService.isStalemate(chessboard, whiteColor);
+
+        // Then
+        assertTrue(isStalemate);
+    }
+
+    @Test
+    void shouldReturnFalseWhenKingIsBlockedButAllyPieceCanMove() {
+        // Given
+        Position positionKing = new Position(3, 0);
+        Piece king = new King(positionKing, positionValidator, whiteColor);
+
+        Position positionRookAlly = new Position(5, 3);
+        Piece rookAlly = new Rook(positionRookAlly, positionValidator, whiteColor);
+
+        Position positionQueenEnemy = new Position(2, 2);
+        Piece queenEnemy = new Queen(positionQueenEnemy, positionValidator, blackColor);
+
+        Position positionRookEnemy = new Position(4, 2);
+        Piece rookEnemy = new Rook(positionRookEnemy, positionValidator, blackColor);
+
+
+        chessboard.add(king, rookAlly, queenEnemy, rookEnemy);
+
+        // When
+        boolean isStalemate = moveService.isStalemate(chessboard, whiteColor);
+
+        // Then
+        assertFalse(isStalemate);
     }
 
 
