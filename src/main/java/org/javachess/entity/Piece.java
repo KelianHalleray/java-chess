@@ -10,11 +10,13 @@ abstract public class Piece {
     private Position position;
     private final PositionValidator positionValidator;
     private final Color color;
+    private boolean hasMoved;
 
     public Piece(Position position, PositionValidator positionValidator, Color color) {
         this.position = position;
         this.positionValidator = positionValidator;
         this.color = color;
+        this.hasMoved = false;
     }
 
     public Position getPosition() {
@@ -25,8 +27,13 @@ abstract public class Piece {
         return color;
     }
 
+    public boolean hasMoved() {
+        return hasMoved;
+    }
+
     public void setPosition(Position position) {
         this.position = position;
+        this.hasMoved = true;
     }
 
     protected List<Position> filterCandidates(List<Position> candidates) {

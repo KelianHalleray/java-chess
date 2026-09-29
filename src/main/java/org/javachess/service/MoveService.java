@@ -3,6 +3,7 @@ package org.javachess.service;
 import org.javachess.entity.*;
 import org.javachess.enums.Color;
 
+import java.awt.*;
 import java.util.List;
 
 public class MoveService {
@@ -18,17 +19,20 @@ public class MoveService {
                 && checkKingSafeRules(piece, chessboard, nextPosition);
     }
 
-    public boolean hasNoPiecesOnPath(SlidingPiece piece, Chessboard chessboard, Position nextPosition) {
-        List<Position> pathPositions = piece.getPathTo(nextPosition);
-
-        for (Position position : pathPositions) {
+    public boolean arePositionsEmpty(Chessboard chessboard, List<Position> positions) {
+        for (Position position : positions) {
             if (chessboard.getPieceFromPosition(position) != null) {
                 return false;
             }
         }
 
         return true;
+    }
 
+    public boolean hasNoPiecesOnPath(SlidingPiece piece, Chessboard chessboard, Position nextPosition) {
+        List<Position> pathPositions = piece.getPathTo(nextPosition);
+
+        return arePositionsEmpty(chessboard, pathPositions);
     }
 
     public void makeMovement(Piece piece, Chessboard chessboard, Position destination) {
@@ -141,5 +145,6 @@ public class MoveService {
 
         return true;
     }
+
 
 }
