@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CastlingService {
-    private final MoveService moveService = new MoveService();
+    private final AttackService attackService = new AttackService();
 
     public void castle(King king, Rook rook, Chessboard chessboard) {
         Direction direction = getCastleDirectionFromKing(king, rook);
@@ -57,7 +57,7 @@ public class CastlingService {
             int kingX = king.getPosition().getPosition_x();
             int kingCastleMoveDistance = 2;
 
-            if (moveService.isKingAttacked(chessboard, king.getColor())) {
+            if (attackService.isKingAttacked(chessboard, king.getColor())) {
                 return false;
             }
 
@@ -70,7 +70,7 @@ public class CastlingService {
                         king.getPosition().getPosition_y()
                 );
 
-                if (!moveService.checkKingSafeRules(
+                if (!attackService.isKingSafeAfterMovement(
                         king,
                         chessboard,
                         kingAfterCastle

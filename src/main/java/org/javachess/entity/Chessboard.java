@@ -30,6 +30,16 @@ public class Chessboard implements PositionValidator {
         return null;
     }
 
+    public boolean arePositionsEmpty(List<Position> positions) {
+        for (Position position : positions) {
+            if (getPieceFromPosition(position) != null) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public boolean exists(Piece piece) {
         return pieces.contains(piece);
     }
