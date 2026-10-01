@@ -9,7 +9,7 @@ import java.util.List;
 abstract public class Piece {
     private Position position;
     private final PositionValidator positionValidator;
-    private final Color color;
+    private Color color;
     private boolean hasMoved;
 
     public Piece(Position position, PositionValidator positionValidator, Color color) {
@@ -25,6 +25,10 @@ abstract public class Piece {
 
     public Color getColor() {
         return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public boolean hasMoved() {

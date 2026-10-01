@@ -83,4 +83,12 @@ public class Chessboard implements PositionValidator {
         return new ArrayList<>(pieces);
     }
 
+    public int getMaxCoordinate() {
+        return BOARD_SIZE - 1;
+    }
+
+    public int getMinCoordinate() {
+        return 0;
+    }
+
 }
